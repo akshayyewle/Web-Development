@@ -4,6 +4,7 @@ import os
 import pandas as pd
 import numpy as np
 import yfinance as yf 
+import stocknews as sn
 from datetime import date
 import plotly.express as px 
 import datetime as dt
@@ -28,6 +29,7 @@ End_Date = st.sidebar.date_input(label='End Date',value=dt.date.today())
 st.subheader(body = f'Basic Info')
 Stock_Data = yf.Ticker(Ticker)
 Stock_Info = Stock_Data.get_info()
+
 Stock_Name = Stock_Info['longName']
 Stock_Country = Stock_Info['country']
 Stock_Sector = Stock_Info['sector']
@@ -56,8 +58,9 @@ Stock_Price_Plot = px.area(Stock_Price_Data, x=Stock_Price_Data.index, y='Close'
 st.plotly_chart(Stock_Price_Plot)
 
 # Create Tabs
-Pricing_Data, Fundamental_Data, News_Data, Management_Data = st.tabs(tabs=['Pricing Data','Fundamental Data', 
-                                                                           'News Data','Management Data'])
+Tabs_List_01 = ['Pricing Data','Fundamental Data','News','Management','Shareholders','Competitors']
+Pricing_Data, Fundamental_Data, News_Data, Management_Data, Shareholer_Data, \
+    Competitor_Data = st.tabs(tabs=Tabs_List_01)
 
 with Pricing_Data:
     st.subheader('Pricing Movement')
@@ -90,7 +93,7 @@ with Pricing_Data:
     st.write('Trailing PE: ',Stock_Info['trailingPE'])
     st.write('Forward PE: ',Stock_Info['forwardPE'])
     # st.write('Earnings Growth: ',Stock_Info['earningsGrowth']*100)
-    st.write('Market Capitalization: ',round(Stock_Data.basic_info['marketCap']/(10**9),2),'Billion USD')
+    # st.write('Market Capitalization: ',round(Stock_Data.basic_info['marketCap']/(10**9),2),'Billion USD')
 
 with Fundamental_Data:
     st.header('Fundamental Data')
@@ -99,11 +102,23 @@ with Fundamental_Data:
     st.subheader('Balance Sheet')
     Stock_Financial_Sheet = Stock_Data.get_financials()
     SFS = Stock_Financial_Sheet
-    # SFS.columns = list(Stock_Financial_Sheet.T.iloc[0])
     st.write(SFS)
     
 with News_Data:
     st.header('News Data')
+
+    # Get News Data
+    Stock_News = sn.StockNews(Ticker,save_news=False)
+    Stock_News_Df = Stock_News.read_rss()
+
+    st.dataframe(Stock_News_Df.head())
+
+    # Display News Data
+    for i in range(10):
+        st.subheader(Stock_News_Df.iloc[i]['title'])
+        st.write('Published: ',Stock_News_Df.iloc[i]['published'])
+        st.write(Stock_News_Df.iloc[i]['summary'])
+        st.write('--------------------------------------------------------------------------------')
 
 with Management_Data:
     st.header('Management Data')
@@ -122,3 +137,17 @@ with Management_Data:
         else:
             st.write('Salary: ', Officer['totalPay'], Stock_Currency, Officer['fiscalYear'])
         
+with Shareholer_Data:
+    st.header('Shareholder Data')
+
+    # Major Shareholders
+    st.subheader('Major Shareholders')
+    Stock_Major_Shareholders = Stock_Data.get_major_holders()
+    Stock_Major_Shareholders.drop('institutionsCount',inplace=True)
+    Stock_Major_Shareholders.sort_values('Value',ascending=False,inplace=True) 
+    # Stock_Major_Shareholders['Value'] = Stock_Major_Shareholders['Value'].apply(lambda x: x*100)     
+    st.dataframe(Stock_Major_Shareholders)
+
+    # Institutional Investors
+    st.subheader('Institutional Investors')
+    st.dataframe(Stock_Data.get_institutional_holders().sort_values('pctHeld',ascending=False))
