@@ -1,6 +1,6 @@
-pip install streamlit
-pip install pandas
-pip install nltk
+!pip install streamlit
+!pip install pandas
+!pip install nltk
 
 import os
 import streamlit as st
