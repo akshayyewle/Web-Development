@@ -1,11 +1,11 @@
-!pip install streamlit
-!pip install pandas
-!pip install nltk
+# !pip install streamlit
+# !pip install pandas
+# !pip install nltk
 
 import os
 import streamlit as st
 import pandas as pd
-from nltk.corpus import stopwords
+# from nltk.corpus import stopwords
 
 
 # Page Margins
@@ -57,7 +57,7 @@ if input_file:
     input_text = input_file.read().decode("utf-8")
     input_word_list = input_text.lower().split()
     input_word_list = [word.strip() for word in input_word_list]
-    input_word_list = [word for word in input_word_list if word not in stopwords.words('english')]
+    # input_word_list = [word for word in input_word_list if word not in stopwords.words('english')]
     input_word_list = [word for word in input_word_list if len(word)>2]
     st.text(input_word_list)
 
