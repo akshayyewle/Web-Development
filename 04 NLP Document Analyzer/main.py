@@ -1,7 +1,7 @@
 # !pip install streamlit
 # !pip install pandas
 # !pip install nltk
-!pip install -r '04 NLP Document Analyzer/requirements.txt'
+# !pip install -r '04 NLP Document Analyzer/requirements.txt'
 
 import os
 import streamlit as st
