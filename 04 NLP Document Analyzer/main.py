@@ -1,6 +1,7 @@
 # !pip install streamlit
 # !pip install pandas
 # !pip install nltk
+pip install -r '04 NLP Document Analyzer/requirements.txt'
 
 import os
 import streamlit as st
@@ -9,7 +10,7 @@ import pandas as pd
 
 
 # Page Margins
-st.set_page_config(layout="wide",page_title="NLP Document Analyser",page_icon="Images/a0e339a68d74573066ac96f28c0f3600.jpg")
+st.set_page_config(layout="wide",page_title="NLP Document Analyser")
 margins_css = """
     <style>
         .main > div {
