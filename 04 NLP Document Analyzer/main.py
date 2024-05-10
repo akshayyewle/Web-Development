@@ -1,4 +1,7 @@
-from operator import le
+pip install streamlit
+pip install pandas
+pip install nltk
+
 import os
 import streamlit as st
 import pandas as pd
