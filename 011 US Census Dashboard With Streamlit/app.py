@@ -213,4 +213,8 @@ with col[2]:
             - :orange[**Gains/Losses**]: states with high inbound/ outbound migration for selected year
             - :orange[**States Migration**]: percentage of states with annual inbound/ outbound migration > 50,000
             ''')
-        
+
+# Reference Notes
+# https://www.youtube.com/watch?v=asFqpMDSPdM
+# https://blog.streamlit.io/crafting-a-dashboard-app-in-python-using-streamlit/
+# https://www.youtube.com/watch?v=HKoOBiAaHGg     
